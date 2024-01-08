@@ -324,7 +324,7 @@ class ZipPopup(bpy.types.Operator):
 
     def invoke(self, context, event):
         dpi_value = Common.get_user_preferences().system.dpi
-        return context.window_manager.invoke_props_dialog(self, width=dpi_value * 6)
+        return context.window_manager.invoke_props_dialog(self, width=int (dpi_value * 6.1))
 
     def check(self, context):
         # Important for changing options
