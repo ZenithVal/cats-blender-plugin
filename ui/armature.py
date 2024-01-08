@@ -154,11 +154,12 @@ class ArmaturePanel(ToolPanel, bpy.types.Panel):
 
         split = col.row(align=True)
         row = split.row(align=True)
-        row.scale_y = 1.5
+        row.scale_y = 1.0
         row.operator(Armature.FixArmature.bl_idname, icon=globs.ICON_FIX_MODEL)
         row = split.row(align=True)
         row.alignment = 'RIGHT'
-        row.scale_y = 1.5
+        row.scale_x = 3.0
+        row.scale_y = 1.0
         row.operator(ModelSettings.bl_idname, text="", icon='MODIFIER')
 
         col.separator()

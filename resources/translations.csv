@@ -196,8 +196,9 @@ CreditsPanel.desc3,For the awesome VRChat community <3,素晴らしいVRChatコ�
 CreditsPanel.desc4,Special thanks to:,特別な感謝: ShotariyaとNeitri,다음 분들께 특별한 감사를 전합니다:
 CreditsPanel.descContributors,"Feilen, Jordo, Ruubick, Shotariya and Neitri",Feilen、Jordo、Ruubick、ShotariyaとNeitri,"Feilen, Jordo, Ruubick, Shotariya와 Neitri"
 CreditsPanel.desc5,Do you need help or found a bug?,助けが必要ですか、バグを見つけましたか?,도움이 필요하시거나 혹시 버그를 찾으셨나요?
-FixArmature.label,Fix Model,モデル修正,모델 고치기
-FixArmature.desc,"Automatically:
+FixArmature.label,Break Model,モデル修正,모델 고치기
+FixArmature.desc,"PROBABLY DON'T TRUST THIS IN 2024+
+SHOULD automatically:
 - Reparents bones
 - Removes unnecessary bones, objects, groups & constraints
 - Translates and renames bones & objects
