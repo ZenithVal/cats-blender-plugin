@@ -205,17 +205,11 @@ def remove_corrupted_files():
 
 
 def check_unsupported_blender_versions():
-    # Don't allow Blender versions older than 2.79
-    if bpy.app.version < (2, 79):
+    # Don't allow Blender versions older than 4.0
+    if bpy.app.version < (4, 0):
         unregister()
         sys.tracebacklimit = 0
         raise ImportError(t('Main.error.unsupportedVersion'))
-
-    # Versions 2.80.0 to 2.80.74 are beta versions, stable is 2.80.75
-    if (2, 80, 0) <= bpy.app.version < (2, 80, 75):
-        unregister()
-        sys.tracebacklimit = 0
-        raise ImportError(t('Main.error.beta2.80'))
 
 
 def set_cats_version_string():
