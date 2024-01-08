@@ -23,10 +23,6 @@ class BakePanel(ToolPanel, bpy.types.Panel):
         row.operator(Bake.BakeTutorialButton.bl_idname, icon='FORWARD')
         col.separator()
 
-        if Common.version_2_79_or_older():
-            col.label(text=t('BakePanel.versionTooOld'), icon='ERROR')
-            return
-
         col.label(text=t('BakePanel.autodetectlabel'))
         row = col.row(align=True)
         row.operator(Bake.BakePresetDesktop.bl_idname, icon="ANTIALIASED")

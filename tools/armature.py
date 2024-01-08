@@ -35,7 +35,6 @@ from mathutils import Matrix
 from . import common as Common
 from . import translate as Translate
 from . import armature_bones as Bones
-from .common import version_2_79_or_older
 from .register import register_wrap
 from .translations import t
 
@@ -228,36 +227,23 @@ class FixArmature(bpy.types.Operator):
             view_area.clip_start = 0.01
             view_area.clip_end = 300
 
-        if version_2_79_or_older():
-            # Set better bone view
-            armature.data.draw_type = 'OCTAHEDRAL'
+        armature.data.display_type = 'OCTAHEDRAL'
+        if hasattr(armature, 'draw_type'):
             armature.draw_type = 'WIRE'
-            armature.show_x_ray = True
-            armature.data.show_bone_custom_shapes = False
-            armature.layers[0] = True
+        armature.show_in_front = True
+        armature.data.show_bone_custom_shapes = False
+        # context.space_data.overlay.show_transparent_bones = True
+        if view_area:
+            view_area.shading.show_backface_culling = True
 
-            # Disable backface culling
-            area = next(area for area in bpy.context.screen.areas if area.type == 'VIEW_3D')
-            space = next(space for space in area.spaces if space.type == 'VIEW_3D')
-            space.show_backface_culling = True  # set the viewport shading
-        else:
-            armature.data.display_type = 'OCTAHEDRAL'
-            if hasattr(armature, 'draw_type'):
-                armature.draw_type = 'WIRE'
-            armature.show_in_front = True
-            armature.data.show_bone_custom_shapes = False
-            # context.space_data.overlay.show_transparent_bones = True
-            if view_area:
-                view_area.shading.show_backface_culling = True
+        # Set the Color Management View Transform to "Standard" instead of the Blender default "Filmic"
+        try:
+            context.scene.view_settings.view_transform = 'Standard'
+        except TypeError:
+            print('Color Management View Transform "Standard" not found!')
 
-            # Set the Color Management View Transform to "Standard" instead of the Blender default "Filmic"
-            try:
-                context.scene.view_settings.view_transform = 'Standard'
-            except TypeError:
-                print('Color Management View Transform "Standard" not found!')
-
-            # Set shading to 3D view
-            set_material_shading()
+        # Set shading to 3D view
+        set_material_shading()
 
         # Remove Rigidbodies and joints
         if context.scene.remove_rigidbodies_joints:
@@ -400,23 +386,13 @@ class FixArmature(bpy.types.Operator):
             Common.clean_material_names(mesh)
 
             # If all materials are transparent, make them visible. Also set transparency always to Z-Transparency
-            if version_2_79_or_older():
-                all_transparent = True
-                for mat_slot in mesh.material_slots:
-                    mat_slot.material.transparency_method = 'Z_TRANSPARENCY'
-                    if mat_slot.material.alpha > 0:
-                        all_transparent = False
-                if all_transparent:
-                    for mat_slot in mesh.material_slots:
-                        mat_slot.material.alpha = 1
-            else:
-                if context.scene.fix_materials:
-                    # Make materials exportable in Blender 2.80 and remove glossy mmd shader look
-                    # Common.remove_toon_shader(mesh)
-                    if mmd_tools_installed:
-                        Common.fix_mmd_shader(mesh)
-                    Common.fix_vrm_shader(mesh)
-                    Common.add_principled_shader(mesh)
+            if context.scene.fix_materials:
+                # Make materials exportable in Blender 2.80 and remove glossy mmd shader look
+                # Common.remove_toon_shader(mesh)
+                if mmd_tools_installed:
+                    Common.fix_mmd_shader(mesh)
+                Common.fix_vrm_shader(mesh)
+                Common.add_principled_shader(mesh)
 
             # Reorders vrc shape keys to the correct order
             Common.sort_shape_keys(mesh.name)
@@ -1220,8 +1196,7 @@ class FixArmature(bpy.types.Operator):
         if not source_engine:
             try:
                 bpy.ops.mmd_tools.set_shadeless_glsl_shading()
-                if not version_2_79_or_older():
-                    set_material_shading()
+                set_material_shading()
             except RuntimeError:
                 pass
 

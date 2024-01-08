@@ -37,7 +37,6 @@ from . import armature_manual
 from . import common as Common
 from . import settings as Settings
 from . import fbx_patch as Fbx_patch
-from .common import version_2_79_or_older
 from .register import register_wrap
 from .translations import t
 
@@ -63,16 +62,13 @@ zip_files = {}
 class ImportAnyModel(bpy.types.Operator, bpy_extras.io_utils.ImportHelper):
     bl_idname = 'cats_importer.import_any_model'
     bl_label = t('ImportAnyModel.label')
-    if version_2_79_or_older():
-        bl_description = t('ImportAnyModel.desc2.79')
-    else:
-        bl_description = t('ImportAnyModel.desc2.8')
+    bl_description = t('ImportAnyModel.desc2.8')
     bl_options = {'REGISTER', 'UNDO', 'INTERNAL'}
 
     files = bpy.props.CollectionProperty(type=bpy.types.OperatorFileListElement, options={'HIDDEN', 'SKIP_SAVE'})
     directory = bpy.props.StringProperty(maxlen=1024, subtype='FILE_PATH', options={'HIDDEN', 'SKIP_SAVE'})
 
-    filter_glob = bpy.props.StringProperty(default=formats_279 if version_2_79_or_older() else formats, options={'HIDDEN'})
+    filter_glob = bpy.props.StringProperty(default=formats, options={'HIDDEN'})
     text1 = bpy.props.BoolProperty(
         name=t('ImportAnyModel.importantInfo.label'),
         description=t('ImportAnyModel.importantInfo.desc'),
@@ -152,13 +148,8 @@ class ImportAnyModel(bpy.types.Operator, bpy_extras.io_utils.ImportHelper):
         # XNALara
         elif file_ending == 'xps' or file_ending == 'mesh' or file_ending == 'ascii':
             try:
-                if version_2_79_or_older():
-                    bpy.ops.xps_tools.import_model('EXEC_DEFAULT',
-                                                   filepath=file_path,
-                                                   colorizeMesh=False)
-                else:
-                    bpy.ops.xps_tools.import_model('EXEC_DEFAULT',
-                                                   filepath=file_path)
+                bpy.ops.xps_tools.import_model('EXEC_DEFAULT',
+                                                filepath=file_path)
             except AttributeError:
                 bpy.ops.cats_importer.install_xps('INVOKE_DEFAULT')
 
@@ -297,10 +288,7 @@ def fix_armatures_post_import(pre_import_objects):
         # Set better bone view
         if hasattr(armature, 'draw_type'):
             armature.draw_type = 'WIRE'
-        if version_2_79_or_older():
-            armature.show_x_ray = True
-        else:
-            armature.show_in_front = True
+        armature.show_in_front = True
 
 
 @register_wrap
@@ -460,10 +448,7 @@ class ImportXPS(bpy.types.Operator):
             context.scene.layers[0] = True
 
         try:
-            if version_2_79_or_older():
-                bpy.ops.xps_tools.import_model('INVOKE_DEFAULT', colorizeMesh=False)
-            else:
-                bpy.ops.xps_tools.import_model('INVOKE_DEFAULT')
+            bpy.ops.xps_tools.import_model('INVOKE_DEFAULT')
         except AttributeError:
             bpy.ops.cats_importer.install_xps('INVOKE_DEFAULT')
 
@@ -764,10 +749,7 @@ class VrmToolsButton(bpy.types.Operator):
     bl_options = {'INTERNAL'}
 
     def execute(self, context):
-        if Common.version_2_79_or_older():
-            webbrowser.open(t('VrmToolsButton.URL_2.79'))
-        else:
-            webbrowser.open(t('VrmToolsButton.URL_2.8'))
+        webbrowser.open(t('VrmToolsButton.URL_2.8'))
 
         self.report({'INFO'}, t('VrmToolsButton.success'))
         return {'FINISHED'}
@@ -834,18 +816,8 @@ class ExportModel(bpy.types.Operator):
                     if mat_slot and mat_slot.material and mat_slot.material.users and mat_slot.material.name not in _mat_list:
                         _mat_list.append(mat_slot.material.name)
 
-                        # Check if any textures are found
-                        if version_2_79_or_older():
-                            if not _textures_found:
-                                for tex_slot in mat_slot.material.texture_slots:
-                                    if tex_slot and tex_slot.texture and tex_slot.texture.image:
-                                        tex_path = bpy.path.abspath(tex_slot.texture.image.filepath)
-                                        if os.path.isfile(tex_path):
-                                            _textures_found = True
-                                            break
-                        else:
-                            _textures_found = True
-                            # TODO
+                        _textures_found = True
+                        # TODO
 
                 if Common.has_shapekeys(mesh):
                     # Check if there are broken shapekeys

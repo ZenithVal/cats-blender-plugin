@@ -28,7 +28,6 @@ import bpy
 
 from . import common as Common
 from . import eyetracking as Eyetracking
-from .common import version_2_79_or_older
 from .register import register_wrap
 from .translations import t
 
@@ -77,12 +76,8 @@ def start_pose_mode(reset_pose=True):
             bpy.context.selected_editable_bones) > 0:
         current = bpy.context.selected_editable_bones[0].name
 
-    if version_2_79_or_older():
-        bpy.context.space_data.use_pivot_point_align = False
-        bpy.context.space_data.show_manipulator = True
-    else:
-        pass
-        # TODO
+    pass
+    # TODO
 
     armature = Common.set_default_stage()
     Common.switch('POSE')
@@ -111,10 +106,7 @@ def start_pose_mode(reset_pose=True):
             if index != 0:
                 pb.select = False
 
-    if version_2_79_or_older():
-        bpy.context.space_data.transform_manipulators = {'ROTATE'}
-    else:
-        bpy.ops.wm.tool_set_by_id(name="builtin.rotate")
+    bpy.ops.wm.tool_set_by_id(name="builtin.rotate")
 
     saved_data.load(hide_only=True)
     Common.hide(armature, False)
@@ -184,10 +176,7 @@ def stop_pose_mode(reset_pose=True):
             for shape_key in mesh.data.shape_keys.key_blocks:
                 shape_key.value = 0
 
-    if version_2_79_or_older():
-        bpy.context.space_data.transform_manipulators = {'TRANSLATE'}
-    else:
-        bpy.ops.wm.tool_set_by_id(name="builtin.select_box")
+    bpy.ops.wm.tool_set_by_id(name="builtin.select_box")
 
     Eyetracking.eye_left = None
 

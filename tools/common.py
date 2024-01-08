@@ -57,13 +57,8 @@ from mmd_tools_local.panels import view_prop as mmd_view_prop
 #  - Checkbox for eye blinking/moving
 #  - Translate progress bar
 
-
-def version_2_79_or_older():
-    return bpy.app.version < (2, 80)
-
-
 def get_objects():
-    return bpy.context.scene.objects if version_2_79_or_older() else bpy.context.view_layer.objects
+    return bpy.context.view_layer.objects
 
 
 class SavedData:
@@ -167,8 +162,7 @@ def unhide_all():
         hide(obj, False)
         set_unselectable(obj, False)
 
-    if not version_2_79_or_older():
-        unhide_all_unnecessary()
+    unhide_all_unnecessary()
 
 
 def unhide_children(parent):
@@ -196,43 +190,30 @@ def unselect_all():
 def set_active(obj, skip_sel=False):
     if not skip_sel:
         select(obj)
-    if version_2_79_or_older():
-        bpy.context.scene.objects.active = obj
-    else:
-        bpy.context.view_layer.objects.active = obj
+    bpy.context.view_layer.objects.active = obj
 
 
 def get_active():
-    if version_2_79_or_older():
-        return bpy.context.scene.objects.active
     return bpy.context.view_layer.objects.active
 
 
 def select(obj, sel=True):
     if sel:
         hide(obj, False)
-    if version_2_79_or_older():
-        obj.select = sel
-    else:
-        obj.select_set(sel)
+    obj.select_set(sel)
 
 
 def is_selected(obj):
-    if version_2_79_or_older():
-        return obj.select
     return obj.select_get()
 
 
 def hide(obj, val=True):
     if hasattr(obj, 'hide'):
         obj.hide = val
-    if not version_2_79_or_older():
-        obj.hide_set(val)
+    obj.hide_set(val)
 
 
 def is_hidden(obj):
-    if version_2_79_or_older():
-        return obj.hide
     return obj.hide_get()
 
 
@@ -265,7 +246,7 @@ def set_default_stage():
     """
 
     # Remove rigidbody collections, as they cause issues if they are not in the view_layer
-    if not version_2_79_or_older() and bpy.context.scene.remove_rigidbodies_joints:
+    if bpy.context.scene.remove_rigidbodies_joints:
         print('Collections:')
         for collection in bpy.data.collections:
             print(' ' + collection.name, collection.name.lower())
@@ -290,8 +271,6 @@ def set_default_stage():
     armature = get_armature()
     if armature:
         set_active(armature)
-        if version_2_79_or_older():
-            armature.layers[0] = True
 
     # Fix broken armatures
     if not bpy.context.scene.armature:
@@ -830,17 +809,8 @@ def join_meshes(armature_name=None, mode=0, apply_transformations=True, repair_s
                     apply_modifier(mod)
 
         # Standardize UV maps name
-        if version_2_79_or_older():
-            if mesh.data.uv_textures:
-                mesh.data.uv_textures[0].name = 'UVMap'
-            for mat_slot in mesh.material_slots:
-                if mat_slot and mat_slot.material:
-                    for tex_slot in mat_slot.material.texture_slots:
-                        if tex_slot and tex_slot.texture and tex_slot.texture_coords == 'UV':
-                            tex_slot.uv_layer = 'UVMap'
-        else:
-            if mesh.data.uv_layers:
-                mesh.data.uv_layers[0].name = 'UVMap'
+        if mesh.data.uv_layers:
+            mesh.data.uv_layers[0].name = 'UVMap'
 
     # Get the name of the active mesh in order to check if it was deleted later
     active_mesh_name = get_active().name
@@ -1798,8 +1768,6 @@ def has_shapekeys(mesh):
 
 
 def matmul(a, b):
-    if version_2_79_or_older():
-        return a * b
     return a @ b
 
 
@@ -2133,9 +2101,7 @@ def toggle_mmd_tabs(shutdown_plugin=False):
         mmd_view_prop.MMDViewPanel,
         mmd_view_prop.MMDSDEFPanel,
     ]
-
-    if not version_2_79_or_older():
-        mmd_cls = mmd_cls + mmd_cls_shading
+    mmd_cls = mmd_cls + mmd_cls_shading
 
     # If the plugin is shutting down, load the mmd_tools tabs before that, to avoid issues when unregistering mmd_tools
     if bpy.context.scene.show_mmd_tabs or shutdown_plugin:
