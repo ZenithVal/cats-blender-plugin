@@ -1,3 +1,21 @@
+
+CATS Blender plugin but I'm stripping it down to the only features I actually use. <br>
+Slowly... Works on Blender 4.0. **Actively removing support for older versions**
+
+All I plan to keep:
+- Apply as Rest Pose
+- Apply shapekey to Basis
+- Most of the model options section
+- Translation tools
+- Generate Visemes
+- Export Model (It's just a macro that applies a export preset)
+- Merge Bone to Parent
+- Merge Bone to Selected 
+
+<br>
+
+<details><Summary>Old Readme</Summary>
+
 # Cats Blender Plugin (0.19.0)
 
 A tool designed to shorten steps needed to import and optimize models into VRChat.
@@ -428,3 +446,5 @@ Post a response in this thread or send your feedback to the official discord ser
 If you enjoy how this plugin saves you countless hours of work consider supporting us through Patreon:
 
 [![](https://i.imgur.com/BFIald5.png)](https://www.patreon.com/catsblenderplugin)
+
+</details>
