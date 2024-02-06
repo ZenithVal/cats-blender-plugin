@@ -1,7 +1,6 @@
 import bpy
 
 from .. import globs
-from .. import updater
 from .main import ToolPanel
 from ..tools import common as Common
 from ..tools import armature as Armature
@@ -22,9 +21,6 @@ class ArmaturePanel(ToolPanel, bpy.types.Panel):
         layout = self.layout
         box = layout.box()
 
-        updater.check_for_update_background(check_on_startup=True)
-        updater.draw_update_notification_panel(box)
-
         col = box.column(align=True)
 
         if bpy.app.version < (2, 79, 0):
@@ -40,17 +36,6 @@ class ArmaturePanel(ToolPanel, bpy.types.Panel):
             row.label(text=t('ArmaturePanel.warn.oldBlender3'), icon='BLANK1')
             col.separator()
             col.separator()
-
-        # if addon_updater_ops.updater.update_ready:  # TODO
-        #     col.separator()
-        #     row = col.row(align=True)
-        #     row.scale_y = 0.75
-        #     row.label(text='New Cats version available!', icon='INFO')
-        #     row = col.row(align=True)
-        #     row.scale_y = 0.75
-        #     row.label(text='Check the Updater panel!', icon='BLANK1')
-        #     col.separator()
-        #     col.separator()
 
         if not globs.dict_found:
             col.separator()

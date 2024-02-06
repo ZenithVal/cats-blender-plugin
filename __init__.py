@@ -25,15 +25,15 @@
 # Edits by: GiveMeAllYourCats, Hotox
 
 bl_info = {
-    'name': 'Cats Blender Plugin',
+    'name': 'Cats Blender Plugin (Stripped for Blender 4.0)',
     'category': '3D View',
-    'author': 'GiveMeAllYourCats & Hotox',
+    'author': 'GiveMeAllYourCats, Hotox, & ZenithVal',
     'location': 'View 3D > Tool Shelf > CATS',
     'description': 'A tool designed to shorten steps needed to import and optimize models into VRChat',
-    'version': (0, 19, 0),  # Has to be (x, x, x) not [x, x, x]!! Only change this version and the dev branch var right before publishing the new update!
-    'blender': (2, 80, 0),
-    'wiki_url': 'https://github.com/michaeldegroot/cats-blender-plugin',
-    'tracker_url': 'https://github.com/michaeldegroot/cats-blender-plugin/issues',
+    'version': (0, 20, 0),  # Has to be (x, x, x) not [x, x, x]!! Only change this version and the dev branch var right before publishing the new update!
+    'blender': (4, 00, 0),
+    'wiki_url': 'https://github.com/ZenithVal/cats-blender-plugin',
+    'tracker_url': 'https://github.com/ZenithVal/cats-blender-plugin',
     'warning': '',
 }
 dev_branch = False
@@ -63,13 +63,11 @@ else:
 if not is_reloading:
     # This order is important
     import mmd_tools_local
-    from . import updater
     from . import tools
     from . import ui
     from . import extentions
 else:
     import importlib
-    importlib.reload(updater)
     importlib.reload(mmd_tools_local)
     importlib.reload(tools)
     importlib.reload(ui)
@@ -120,11 +118,8 @@ def remove_corrupted_files():
         'LICENSE',
         'README.md',
         '__init__.py',
-        'addon_updater.py',
-        'addon_updater_ops.py',
         'extensions.py',
         'globs.py',
-        'updater.py',
     ]
 
     no_perm = False
@@ -251,9 +246,6 @@ def register():
     # Set cats version string
     version_str = set_cats_version_string()
 
-    # Register Updater and check for CATS update
-    updater.register(bl_info, dev_branch, version_str)
-
     # Set some global settings, first allowed use of globs
     globs.dev_branch = dev_branch
     globs.version_str = version_str
@@ -332,9 +324,6 @@ def register():
 
 def unregister():
     print("### Unloading CATS...")
-
-    # Unregister updater
-    updater.unregister()
 
     # Register unloaded mmd_tools tabs if they are hidden to avoid issues when unloading mmd_tools
     if not bpy.context.scene.show_mmd_tabs:
