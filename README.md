@@ -1,6 +1,6 @@
 
-CATS Blender plugin but I'm stripping it down to the only features I actually use. <br>
-Slowly... Works on Blender 4.0. **Actively removing support for older versions**
+CATS but I'm stripping it down to remaining useful tools on Blender 4.0+<br>
+Don't bother trying to use on <Blender 4.0, I'm not supporting older versions. 
 
 All I plan to keep:
 - Apply as Rest Pose
@@ -8,9 +8,9 @@ All I plan to keep:
 - Most of the model options section
 - Translation tools
 - Generate Visemes
-- Export Model (It's just a macro that applies a export preset)
 - Merge Bone to Parent
 - Merge Bone to Selected 
+- Export Model (It's just a macro that applies a export preset)
 
 <br>
 
