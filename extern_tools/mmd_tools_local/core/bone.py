@@ -229,10 +229,7 @@ class FnBone(object):
 
     @staticmethod
     def patch_rna_idprop(pose_bones):
-        if bpy.app.version < (2, 81, 0): # workaround for Rigify conflicts (fixed in Blender 2.81)
-            from rna_prop_ui import rna_idprop_ui_get
-            for b in pose_bones:
-                rna_idprop_ui_get(b, create=True)
+        return
 
     @classmethod
     def clean_additional_transformation(cls, armature):

@@ -295,33 +295,16 @@ class ObjectOp:
             if d.data_path.startswith(key.path_from_id()):
                 key.id_data.driver_remove(d.data_path, -1)
 
-    if bpy.app.version < (2, 75, 0):
-        def shape_key_remove(self, key):
-            obj = self.__obj
-            assert(key.id_data == obj.data.shape_keys)
-            key_blocks = key.id_data.key_blocks
-            relative_key_map = {k.name:getattr(k.relative_key, 'name', '') for k in key_blocks}
-            last_index, obj.active_shape_key_index = obj.active_shape_key_index, key_blocks.find(key.name)
-            if last_index >= obj.active_shape_key_index:
-                last_index = max(0, last_index-1)
-            bpy.context.scene.objects.active, last = obj, bpy.context.scene.objects.active
-            self.__clean_drivers(key)
-            bpy.ops.object.shape_key_remove()
-            bpy.context.scene.objects.active = last
-            for k in key_blocks:
-                k.relative_key = key_blocks.get(relative_key_map[k.name], key_blocks[0])
-            obj.active_shape_key_index = min(last_index, len(key_blocks)-1)
-    else:
-        def shape_key_remove(self, key):
-            obj = self.__obj
-            assert(key.id_data == obj.data.shape_keys)
-            key_blocks = key.id_data.key_blocks
-            last_index = obj.active_shape_key_index
-            if last_index >= key_blocks.find(key.name):
-                last_index = max(0, last_index-1)
-            self.__clean_drivers(key)
-            obj.shape_key_remove(key)
-            obj.active_shape_key_index = min(last_index, len(key_blocks)-1)
+    def shape_key_remove(self, key):
+        obj = self.__obj
+        assert(key.id_data == obj.data.shape_keys)
+        key_blocks = key.id_data.key_blocks
+        last_index = obj.active_shape_key_index
+        if last_index >= key_blocks.find(key.name):
+            last_index = max(0, last_index-1)
+        self.__clean_drivers(key)
+        obj.shape_key_remove(key)
+        obj.active_shape_key_index = min(last_index, len(key_blocks)-1)
 
 class TransformConstraintOp:
 
@@ -374,62 +357,32 @@ class TransformConstraintOp:
         for attr in cls.min_max_attributes(c.map_to, 'to_max'):
             setattr(c, attr, value*influence)
 
-if bpy.app.version < (2, 80, 0):
-    class SceneOp:
-        def __init__(self, context):
-            self.__context = context or bpy.context
-            self.__scene = self.__context.scene
+class SceneOp:
+    def __init__(self, context):
+        self.__context = context or bpy.context
+        self.__collection = self.__context.collection
+        self.__view_layer = self.__context.view_layer
 
-        def select_object(self, obj):
-            obj.hide = obj.hide_select = False
-            obj.select = obj.layers[self.__scene.active_layer] = True
+    def select_object(self, obj):
+        obj.hide = obj.hide_select = False
+        obj.select = True
 
-        def link_object(self, obj):
-            self.__scene.objects.link(obj)
+    def link_object(self, obj):
+        self.__collection.objects.link(obj)
 
-        @property
-        def active_object(self):
-            return self.__scene.objects.active
+    @property
+    def active_object(self):
+        return self.__view_layer.objects.active
 
-        @active_object.setter
-        def active_object(self, obj):
-            obj.layers[self.__scene.active_layer] = True
-            self.__scene.objects.active = obj
+    @active_object.setter
+    def active_object(self, obj):
+        self.__view_layer.objects.active = obj
 
-        @property
-        def id_scene(self):
-            return self.__scene
+    @property
+    def id_scene(self):
+        return self.__view_layer
 
-        @property
-        def id_objects(self):
-            return self.__scene.objects
-else:
-    class SceneOp:
-        def __init__(self, context):
-            self.__context = context or bpy.context
-            self.__collection = self.__context.collection
-            self.__view_layer = self.__context.view_layer
-
-        def select_object(self, obj):
-            obj.hide = obj.hide_select = False
-            obj.select = True
-
-        def link_object(self, obj):
-            self.__collection.objects.link(obj)
-
-        @property
-        def active_object(self):
-            return self.__view_layer.objects.active
-
-        @active_object.setter
-        def active_object(self, obj):
-            self.__view_layer.objects.active = obj
-
-        @property
-        def id_scene(self):
-            return self.__view_layer
-
-        @property
-        def id_objects(self):
-            return self.__view_layer.objects
+    @property
+    def id_objects(self):
+        return self.__view_layer.objects
 

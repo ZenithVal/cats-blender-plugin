@@ -40,10 +40,7 @@ def register_wrap(cls):
 
 def make_annotations(cls):
     if __make_annotations:
-        if bpy.app.version < (2, 93, 0):
-            bl_props = {k:v for k, v in cls.__dict__.items() if isinstance(v, tuple)}
-        else:
-            bl_props = {k:v for k, v in cls.__dict__.items() if isinstance(v, bpy.props._PropertyDeferred)}
+        bl_props = {k:v for k, v in cls.__dict__.items() if isinstance(v, bpy.props._PropertyDeferred)}
         if bl_props:
             if '__annotations__' not in cls.__dict__:
                 setattr(cls, '__annotations__', {})

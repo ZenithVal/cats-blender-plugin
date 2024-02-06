@@ -12,26 +12,16 @@ import mmd_tools_local.core.model as mmd_model
 
 TRIA_UP_BAR = 'TRIA_UP_BAR'
 TRIA_DOWN_BAR = 'TRIA_DOWN_BAR'
-if bpy.app.version < (2, 73, 0):
-    TRIA_UP_BAR = 'TRIA_UP'
-    TRIA_DOWN_BAR = 'TRIA_DOWN'
-
 ICON_ADD, ICON_REMOVE = 'ADD', 'REMOVE'
-if bpy.app.version < (2, 80, 0):
-    ICON_ADD, ICON_REMOVE = 'ZOOMIN', 'ZOOMOUT'
 
 
-if bpy.app.version < (2, 80, 0):
-    def _layout_split(layout, factor, align):
-        return layout.split(percentage=factor, align=align)
-else:
-    def _layout_split(layout, factor, align):
-        return layout.split(factor=factor, align=align)
+def _layout_split(layout, factor, align):
+    return layout.split(factor=factor, align=align)
 
 
 class _PanelBase(object):
     bl_space_type = 'VIEW_3D'
-    bl_region_type = 'TOOLS' if bpy.app.version < (2, 80, 0) else 'UI'
+    bl_region_type = 'UI'
     bl_category = 'MMD'
 
 

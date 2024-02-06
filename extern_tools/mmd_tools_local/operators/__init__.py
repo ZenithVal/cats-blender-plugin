@@ -1,10 +1,8 @@
 # -*- coding: utf-8 -*-
 
 if "bpy" in locals():
-    if bpy.app.version < (2, 71, 0):
-        import imp as importlib
-    else:
-        import importlib
+    import importlib
+    
     importlib.reload(animation)
     importlib.reload(camera)
     importlib.reload(display_item)

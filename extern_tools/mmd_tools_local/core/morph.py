@@ -21,15 +21,9 @@ class FnMorph(object):
         if obj.data.shape_keys is None:
             bpy.ops.object.shape_key_add()
 
-        if bpy.app.version < (2, 73, 0):
-            def __move_to_bottom(key_blocks, name):
-                obj.active_shape_key_index = key_blocks.find(name)
-                for move in range(len(key_blocks)-1-obj.active_shape_key_index):
-                    bpy.ops.object.shape_key_move(type='DOWN')
-        else:
-            def __move_to_bottom(key_blocks, name):
-                obj.active_shape_key_index = key_blocks.find(name)
-                bpy.ops.object.shape_key_move(type='BOTTOM')
+        def __move_to_bottom(key_blocks, name):
+            obj.active_shape_key_index = key_blocks.find(name)
+            bpy.ops.object.shape_key_move(type='BOTTOM')
 
         key_blocks = obj.data.shape_keys.key_blocks
         for name in shape_key_names:
@@ -46,21 +40,12 @@ class FnMorph(object):
         key_blocks = getattr(obj.data.shape_keys, 'key_blocks', None)
         if key_blocks is None:
             return
-        if bpy.app.version < (2, 73, 0):
-            len_key_blocks = len(key_blocks)
-            for ii, name in enumerate(x for x in reversed(shape_key_names) if x in key_blocks):
-                obj.active_shape_key_index = idx = key_blocks.find(name)
-                offset = (len_key_blocks - 1 - idx) - ii
-                move_type = 'UP' if offset < 0 else 'DOWN'
-                for move in range(abs(offset)):
-                    bpy.ops.object.shape_key_move(type=move_type)
-        else:
-            for name in shape_key_names:
-                idx = key_blocks.find(name)
-                if idx < 0:
-                    continue
-                obj.active_shape_key_index = idx
-                bpy.ops.object.shape_key_move(type='BOTTOM')
+        for name in shape_key_names:
+            idx = key_blocks.find(name)
+            if idx < 0:
+                continue
+            obj.active_shape_key_index = idx
+            bpy.ops.object.shape_key_move(type='BOTTOM')
 
     @staticmethod
     def get_morph_slider(rig):

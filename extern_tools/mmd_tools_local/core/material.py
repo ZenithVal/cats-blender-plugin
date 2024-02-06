@@ -705,12 +705,9 @@ class _FnMaterialCycles(_FnMaterialBI):
 
         node_vector = ng.new_node('ShaderNodeMapping', (2, -1))
         node_vector.vector_type = 'POINT'
-        if bpy.app.version < (2, 81, 0):
-            node_vector.translation = (0.5, 0.5, 0.0)
-            node_vector.scale = (0.5, 0.5, 1.0)
-        else:
-            node_vector.inputs['Location'].default_value = (0.5, 0.5, 0.0)
-            node_vector.inputs['Scale'].default_value = (0.5, 0.5, 1.0)
+
+        node_vector.inputs['Location'].default_value = (0.5, 0.5, 0.0)
+        node_vector.inputs['Scale'].default_value = (0.5, 0.5, 1.0)
 
         links = ng.links
         links.new(tex_coord.outputs['Normal'], vec_trans.inputs['Vector'])
@@ -813,6 +810,4 @@ class _FnMaterialCycles(_FnMaterialBI):
         return shader
 
 FnMaterial = _FnMaterialCycles
-if bpy.app.version < (2, 80, 0):
-    FnMaterial = _FnMaterialBI
 

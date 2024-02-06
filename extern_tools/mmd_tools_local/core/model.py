@@ -161,9 +161,6 @@ class Model:
                 if hasattr(obj.cycles_visibility, attr_name):
                     setattr(obj.cycles_visibility, attr_name, False)
 
-        if bpy.app.version < (2, 71, 0):
-            obj.mmd_rigid.shape = 'BOX'
-            obj.mmd_rigid.size = (1, 1, 1)
         bpy.ops.rigidbody.object_add(type='ACTIVE')
         if counts == 1:
             return [obj]
@@ -606,25 +603,7 @@ class Model:
         rigid_body.setRigidBodyWorldEnabled(rigidbody_world_enabled)
 
     def __removeTemporaryObjects(self):
-        if bpy.app.version < (2, 78, 0):
-            self.__removeChildrenOfTemporaryGroupObject() # for speeding up only
-            for i in self.temporaryObjects():
-                bpy.context.scene.objects.unlink(i)
-                bpy.data.objects.remove(i)
-        elif bpy.app.version < (2, 80, 0):
-            for i in self.temporaryObjects():
-                bpy.data.objects.remove(i, do_unlink=True)
-        elif bpy.app.version < (2, 81, 0):
-            tmp_objs = tuple(self.temporaryObjects())
-            for i in tmp_objs:
-                for c in i.users_collection:
-                    c.objects.unlink(i)
-            bpy.ops.object.delete({'selected_objects':tmp_objs, 'active_object':self.rootObject()})
-            for i in tmp_objs:
-                if i.users < 1:
-                    bpy.data.objects.remove(i)
-        else:
-            bpy.ops.object.delete({'selected_objects':tuple(self.temporaryObjects()), 'active_object':self.rootObject()})
+        bpy.ops.object.delete({'selected_objects':tuple(self.temporaryObjects()), 'active_object':self.rootObject()})
 
     def __removeChildrenOfTemporaryGroupObject(self):
         tmp_grp_obj = self.temporaryGroupObject()

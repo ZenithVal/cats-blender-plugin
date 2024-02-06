@@ -12,9 +12,6 @@ from mmd_tools_local.panels.tool import _PanelBase
 
 
 ICON_APPEND_MOVE, ICON_APPEND_ROT, ICON_APPEND_MOVE_ROT = 'IPO_LINEAR', 'IPO_EXPO', 'IPO_QUAD'
-if bpy.app.version < (2, 71, 0):
-    ICON_APPEND_MOVE, ICON_APPEND_ROT, ICON_APPEND_MOVE_ROT = 'NDOF_TRANS', 'NDOF_TURN', 'FORCE_MAGNETIC'
-
 
 @register_wrap
 class MMD_TOOLS_UL_Materials(UIList):

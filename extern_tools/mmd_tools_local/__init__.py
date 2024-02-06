@@ -34,10 +34,7 @@ def register_wrap(cls):
     return cls
 
 if "bpy" in locals():
-    if bpy.app.version < (2, 71, 0):
-        import imp as importlib
-    else:
-        import importlib
+    import importlib
     importlib.reload(properties)
     importlib.reload(operators)
     importlib.reload(panels)
@@ -51,9 +48,6 @@ else:
     from . import properties
     from . import operators
     from . import panels
-
-if bpy.app.version < (2, 80, 0):
-    bl_info['blender'] = (2, 70, 0)
 
 logging.basicConfig(format='%(message)s', level=logging.DEBUG)
 

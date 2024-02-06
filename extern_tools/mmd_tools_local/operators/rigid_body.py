@@ -450,14 +450,6 @@ class UpdateRigidBodyWorld(Operator):
     def __get_rigid_body_world_objects():
         rigid_body.setRigidBodyWorldEnabled(True)
         rbw = bpy.context.scene.rigidbody_world
-        if bpy.app.version < (2, 80, 0):
-            if not rbw.group:
-                rbw.group = bpy.data.groups.new('RigidBodyWorld')
-                rbw.group.use_fake_user = True
-            if not rbw.constraints:
-                rbw.constraints = bpy.data.groups.new('RigidBodyConstraints')
-                rbw.constraints.use_fake_user = True
-            return rbw.group.objects, rbw.constraints.objects
 
         if not rbw.collection:
             rbw.collection = bpy.data.collections.new('RigidBodyWorld')

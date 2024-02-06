@@ -23,20 +23,6 @@ class ArmaturePanel(ToolPanel, bpy.types.Panel):
 
         col = box.column(align=True)
 
-        if bpy.app.version < (2, 79, 0):
-            col.separator()
-            row = col.row(align=True)
-            row.scale_y = 0.75
-            row.label(text=t('ArmaturePanel.warn.oldBlender1'), icon='ERROR')
-            row = col.row(align=True)
-            row.scale_y = 0.75
-            row.label(text=t('ArmaturePanel.warn.oldBlender2'), icon='BLANK1')
-            row = col.row(align=True)
-            row.scale_y = 0.75
-            row.label(text=t('ArmaturePanel.warn.oldBlender3'), icon='BLANK1')
-            col.separator()
-            col.separator()
-
         if not globs.dict_found:
             col.separator()
             row = col.row(align=True)
