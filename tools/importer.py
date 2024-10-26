@@ -763,9 +763,10 @@ _broken_shapes = []
 _textures_found = False
 _eye_meshes_not_named_body = []
 
-max_mats = 4
-max_tris = 70000
-max_meshes_light = 2
+# Bumped these because some of these are done on the unity side a lot of the time. (Mat/Mesh Merging)
+max_mats = 16
+max_tris = 140000 # 70k is still the limit but I got tired of the warning.
+max_meshes_light = 4
 max_meshes_hard = 8
 
 
