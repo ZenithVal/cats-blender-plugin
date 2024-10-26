@@ -441,8 +441,8 @@ class FixArmature(bpy.types.Operator):
             bpy.ops.mesh.reveal()
 
         # Remove Bone Groups
-        for group in armature.pose.bone_groups:
-            armature.pose.bone_groups.remove(group)
+        # for group in armature.pose.bone_groups:
+            # armature.pose.bone_groups.remove(group)
 
         # Bone constraints should be deleted
         # if context.scene.remove_constraints:
@@ -452,14 +452,14 @@ class FixArmature(bpy.types.Operator):
         # armature.data.pose_position = 'REST'
 
         # Count steps for loading bar again and reset the layers
-        steps += len(armature.data.edit_bones)
-        for bone in armature.data.edit_bones:
-            if bone.name in Bones.bone_list or bone.name.startswith(tuple(Bones.bone_list_with)):
-                if bone.parent is not None:
-                    steps += 1
-                else:
-                    steps -= 1
-            bone.layers[0] = True
+        # steps += len(armature.data.edit_bones)
+        # for bone in armature.data.edit_bones:
+        #     if bone.name in Bones.bone_list or bone.name.startswith(tuple(Bones.bone_list_with)):
+        #         if bone.parent is not None:
+        #             steps += 1
+        #         else:
+        #             steps -= 1
+        #     bone.layers[0] = True
 
         # Start loading bar
         current_step = 0
