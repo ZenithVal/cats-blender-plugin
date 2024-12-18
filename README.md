@@ -1,6 +1,6 @@
 
-CATS but I'm stripping it down to remaining useful tools on Blender 4.0+<br>
-Don't bother trying to use on <Blender 4.0, I'm not supporting older versions. 
+CATS but I'm stripping it down to remaining useful tools on Blender 4.3+<br>
+Don't bother trying to use on <Blender 4.3, I'm not supporting older versions. 
 
 All I plan to keep:
 - Apply as Rest Pose

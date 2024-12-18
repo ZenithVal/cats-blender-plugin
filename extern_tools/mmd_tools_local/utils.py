@@ -86,40 +86,40 @@ def mergeVertexGroup(meshObj, src_vertex_group_name, dest_vertex_group_name):
         except ValueError:
             pass
 
-def __getCustomNormalKeeper(mesh):
-    if hasattr(mesh, 'has_custom_normals') and mesh.use_auto_smooth:
-        import bpy
-        class _CustomNormalKeeper:
-            def __init__(self, mesh):
-                mesh.calc_normals_split()
-                self.__normals = tuple(zip((l.normal.copy() for l in mesh.loops), (p.material_index for p in mesh.polygons for v in p.vertices)))
-                mesh.free_normals_split()
-                self.__material_map = {}
-                materials = mesh.materials
-                for i, m in enumerate(materials):
-                    if m is None or m.name in self.__material_map:
-                        materials[i] = bpy.data.materials.new('_mmd_tmp_')
-                    self.__material_map[materials[i].name] = (i, getattr(m, 'name', ''))
+# use_auto_smooth was removed in blender 4.1.0, so this gets killed. Womp.
+# def __getCustomNormalKeeper(mesh):
+#     if hasattr(mesh, 'has_custom_normals') and mesh:
+#         import bpy
+#         class _CustomNormalKeeper:
+#             def __init__(self, mesh):
+#                 mesh.calc_normals_split()
+#                 self.__normals = tuple(zip((l.normal.copy() for l in mesh.loops), (p.material_index for p in mesh.polygons for v in p.vertices)))
+#                 mesh.free_normals_split()
+#                 self.__material_map = {}
+#                 materials = mesh.materials
+#                 for i, m in enumerate(materials):
+#                     if m is None or m.name in self.__material_map:
+#                         materials[i] = bpy.data.materials.new('_mmd_tmp_')
+#                     self.__material_map[materials[i].name] = (i, getattr(m, 'name', ''))
 
-            def restore_custom_normals(self, mesh):
-                materials = mesh.materials
-                for i, m in enumerate(materials):
-                    mat_id, mat_name_orig = self.__material_map[m.name]
-                    if m.name != mat_name_orig:
-                        materials[i] = bpy.data.materials.get(mat_name_orig, None)
-                        m.user_clear()
-                        bpy.data.materials.remove(m)
-                if len(materials) == 1:
-                    mesh.normals_split_custom_set([n for n, x in self.__normals if x == mat_id])
-                    mesh.update()
-        return _CustomNormalKeeper(mesh) # This fixes the issue that "SeparateByMaterials" could break custom normals
-    return None
+#             def restore_custom_normals(self, mesh):
+#                 materials = mesh.materials
+#                 for i, m in enumerate(materials):
+#                     mat_id, mat_name_orig = self.__material_map[m.name]
+#                     if m.name != mat_name_orig:
+#                         materials[i] = bpy.data.materials.get(mat_name_orig, None)
+#                         m.user_clear()
+#                         bpy.data.materials.remove(m)
+#                 if len(materials) == 1:
+#                     mesh.normals_split_custom_set([n for n, x in self.__normals if x == mat_id])
+#                     mesh.update()
+#         return _CustomNormalKeeper(mesh) # This fixes the issue that "SeparateByMaterials" could break custom normals
+#     return None
 
 def separateByMaterials(meshObj):
     if len(meshObj.data.materials) < 2:
         return
     import bpy
-    custom_normal_keeper = __getCustomNormalKeeper(meshObj.data)
     matrix_parent_inverse = meshObj.matrix_parent_inverse.copy()
     prev_parent = meshObj.parent
     dummy_parent = bpy.data.objects.new(name='tmp', object_data=None)
@@ -132,8 +132,6 @@ def separateByMaterials(meshObj):
     finally:
         bpy.ops.object.mode_set(mode='OBJECT')
         for i in dummy_parent.children:
-            if custom_normal_keeper:
-                custom_normal_keeper.restore_custom_normals(i.data)
             materials = i.data.materials
             i.name = getattr(materials[0], 'name', 'None') if len(materials) else 'None'
             i.parent = prev_parent
