@@ -889,7 +889,7 @@ class ExportModel(bpy.types.Operator):
                                          apply_scale_options='FBX_SCALE_ALL',
                                          path_mode=path_mode,
                                          embed_textures=True,
-                                         use_triangles=True,
+                                         use_triangles=False, # This breaks normals sometimes lol
                                          mesh_smooth_type=mesh_smooth_type)
             else:
                 bpy.ops.export_scene.fbx('INVOKE_DEFAULT',
@@ -900,7 +900,7 @@ class ExportModel(bpy.types.Operator):
                                          apply_scale_options='FBX_SCALE_ALL',
                                          path_mode=path_mode,
                                          embed_textures=True,
-                                         use_triangles=True,
+                                         use_triangles=False,
                                          mesh_smooth_type=mesh_smooth_type)
         except (TypeError, ValueError):
             bpy.ops.export_scene.fbx('INVOKE_DEFAULT')
