@@ -764,10 +764,10 @@ _textures_found = False
 _eye_meshes_not_named_body = []
 
 # Bumped these because some of these are done on the unity side a lot of the time. (Mat/Mesh Merging)
-max_mats = 16
-max_tris = 140000 # 70k is still the limit but I got tired of the warning.
-max_meshes_light = 4
-max_meshes_hard = 8
+max_mats = 999
+max_tris = 300000
+max_meshes_light = 999
+max_meshes_hard = 999
 
 
 @register_wrap
