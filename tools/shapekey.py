@@ -62,7 +62,7 @@ class ShapeKeyApplier(bpy.types.Operator):
 
         # Set up shape keys
         mesh.show_only_shape_key = False
-        bpy.ops.object.shape_key_clear()
+        # bpy.ops.object.shape_key_clear()
 
         # Create a copy of the new basis shapekey to make it's current value stay as it is
         new_basis_shapekey.value = new_basis_shapekey_value
@@ -104,6 +104,9 @@ class ShapeKeyApplier(bpy.types.Operator):
             mesh.active_shape_key_index = index
             shapekey = mesh.active_shape_key
             if shapekey and not shapekey.name.endswith('-New') and shapekey.name != 'Basis' and ' - Reverted' not in shapekey.name:
+                # skip over any shapekey that starts with ==== or has a vertex group
+                if shapekey.name.startswith('====') or shapekey.vertex_group:
+                    continue
                 bpy.ops.object.shape_key_remove(all=False)
 
         # Fix the names and the relative shape key
