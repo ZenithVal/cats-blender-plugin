@@ -848,7 +848,7 @@ class ExportModel(bpy.types.Operator):
                     or _tris_count > max_tris \
                     or len(_mat_list) > max_mats \
                     or len(_broken_shapes) > 0 \
-                    or not _textures_found and Settings.get_embed_textures()\
+                    or not _textures_found and Settings.get_embed_textures():
                     # or len(_eye_meshes_not_named_body) > 0:
                 bpy.ops.cats_importer.display_error('INVOKE_DEFAULT')
                 return {'FINISHED'}
