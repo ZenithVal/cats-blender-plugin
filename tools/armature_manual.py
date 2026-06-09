@@ -83,10 +83,11 @@ def start_pose_mode(reset_pose=True):
     Common.switch('POSE')
     armature.data.pose_position = 'POSE'
 
-    for mesh in Common.get_meshes_objects():
-        if Common.has_shapekeys(mesh):
-            for shape_key in mesh.data.shape_keys.key_blocks:
-                shape_key.value = 0
+    # reset shapekeys
+    # for mesh in Common.get_meshes_objects():
+    #     if Common.has_shapekeys(mesh):
+    #         for shape_key in mesh.data.shape_keys.key_blocks:
+    #             shape_key.value = 0
 
     for pb in armature.data.bones:
         pb.select = True
