@@ -1221,7 +1221,7 @@ def repair_shapekey_order(mesh_name):
         custom_data['shape_key_order'] = shape_key_order_temp
         armature['CUSTOM'] = custom_data
 
-    sort_shape_keys(mesh_name, custom_data['shape_key_order'])
+    # sort_shape_keys(mesh_name, custom_data['shape_key_order'])
 
 
 def update_shapekey_orders():
