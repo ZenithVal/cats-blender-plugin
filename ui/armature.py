@@ -38,32 +38,32 @@ class ArmaturePanel(ToolPanel, bpy.types.Panel):
             col.separator()
 
         # Show news from the plugin
-        if Supporter.supporter_data and Supporter.supporter_data.get('news') and Supporter.supporter_data.get('news'):
-            showed_info = False
-            for i, news in enumerate(Supporter.supporter_data.get('news')):
-                info = news.get('info')
-                icon = news.get('icon')
-                custom_icon = news.get('custom_icon')
-                if info and not news.get('disabled'):
-                    showed_info = True
+        # if Supporter.supporter_data and Supporter.supporter_data.get('news') and Supporter.supporter_data.get('news'):
+        #     showed_info = False
+        #     for i, news in enumerate(Supporter.supporter_data.get('news')):
+        #         info = news.get('info')
+        #         icon = news.get('icon')
+        #         custom_icon = news.get('custom_icon')
+        #         if info and not news.get('disabled'):
+        #             showed_info = True
 
-                    row = col.row(align=True)
-                    row.scale_y = 0.75
-                    if custom_icon:
-                        try:
-                            row.label(text=info, icon_value=Supporter.preview_collections["supporter_icons"][custom_icon].icon_id)
-                        except KeyError:
-                            row.label(text=info)
-                    elif icon:
-                        try:
-                            row.label(text=info, icon=icon)
-                        except TypeError:
-                            row.label(text=info)
-                    else:
-                        row.label(text=info)
-            if showed_info:
-                col.separator()
-                col.separator()
+        #             row = col.row(align=True)
+        #             row.scale_y = 0.75
+        #             if custom_icon:
+        #                 try:
+        #                     row.label(text=info, icon_value=Supporter.preview_collections["supporter_icons"][custom_icon].icon_id)
+        #                 except KeyError:
+        #                     row.label(text=info)
+        #             elif icon:
+        #                 try:
+        #                     row.label(text=info, icon=icon)
+        #                 except TypeError:
+        #                     row.label(text=info)
+        #             else:
+        #                 row.label(text=info)
+        #     if showed_info:
+        #         col.separator()
+        #         col.separator()
 
         # row = col.row(align=True)
         # row.prop(context.scene, 'import_mode', expand=True)
