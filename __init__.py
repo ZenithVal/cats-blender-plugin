@@ -25,13 +25,13 @@
 # Edits by: GiveMeAllYourCats, Hotox
 
 bl_info = {
-    'name': 'Cats Blender Plugin (Stripped for Blender 4.0)',
+    'name': 'Cats Blender Plugin (Stripped for Blender 5.2)',
     'category': '3D View',
     'author': 'GiveMeAllYourCats, Hotox, & ZenithVal',
     'location': 'View 3D > Tool Shelf > CATS',
     'description': 'A tool designed to shorten steps needed to import and optimize models into VRChat',
-    'version': (0, 20, 0),  # Has to be (x, x, x) not [x, x, x]!! Only change this version and the dev branch var right before publishing the new update!
-    'blender': (4, 00, 0),
+    'version': (0, 21, 0),  # Has to be (x, x, x) not [x, x, x]!! Only change this version and the dev branch var right before publishing the new update!
+    'blender': (5, 20, 0),
     'wiki_url': 'https://github.com/ZenithVal/cats-blender-plugin',
     'tracker_url': 'https://github.com/ZenithVal/cats-blender-plugin',
     'warning': '',
