@@ -76,7 +76,7 @@ class ArmaturePanel(ToolPanel, bpy.types.Panel):
             split = col.row(align=True)
             row = split.row(align=True)
             row.scale_y = 1.7
-            row.operator(Importer.ImportAnyModel.bl_idname, text=t('ArmaturePanel.ImportAnyModel.label'), icon='ARMATURE_DATA')
+            # row.operator(, text=t('ArmaturePanel.ImportAnyModel.label'), icon='ARMATURE_DATA')
             row = split.row(align=True)
             row.alignment = 'RIGHT'
             row.scale_y = 1.7
@@ -86,7 +86,7 @@ class ArmaturePanel(ToolPanel, bpy.types.Panel):
             split = col.row(align=True)
             row = split.row(align=True)
             row.scale_y = 1.4
-            row.operator(Importer.ImportAnyModel.bl_idname, text=t('ArmaturePanel.ImportAnyModel.label'), icon='ARMATURE_DATA')
+            # row.operator(Importer.ImportAnyModel.bl_idname, text=t('ArmaturePanel.ImportAnyModel.label'), icon='ARMATURE_DATA')
             row.operator(Importer.ExportModel.bl_idname, icon='ARMATURE_DATA').action = 'CHECK'
             row = split.row(align=True)
             row.scale_y = 1.4
